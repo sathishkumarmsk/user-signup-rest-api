@@ -1,5 +1,6 @@
 import { Router } from "express";
-import res from "express/lib/response";
+// import res from "express/lib/response";
+// import { DATE } from "sequelize/dist";
 
 const router = Router();
 
@@ -9,7 +10,8 @@ const data = [
         FirstName: "msk",
         LastName: "sathish",
         UserName: "ms_sathish",
-        Password: true,
+        Password: "msk1234",
+        ConformPassword: "msk1234",
         createdOn: new Date(),
 
 
@@ -19,7 +21,8 @@ const data = [
         FirstName: "sathish",
         LastName: "msk",
         UserName: "msk_sathish",
-        Password: true,
+        Password: "msk12345",
+        ConformPassword: "msk12345",
         createdOn: new Date(),
 
 
@@ -38,6 +41,25 @@ router.get('/:id', (req, res) => {
     } else {
         res.sendStatus(404);
     }
-})
+});
+
+router.post('/', (req, res) => {
+    const itemId = data.length + 1 ;
+
+    const newData = {
+        id: itemId,
+        FirstName: req.body.FirstName,
+        LastName: req.body.LastName,
+        UserName: req.body.UserName,
+        Password: req.body.UserName,
+        ConformPassword: req.body.ConformPassword,
+        createdOn: new Date(),
+
+    }
+
+    data.push(newData);
+
+    res.status(201).json(newData);
+});
 
 export default router;
