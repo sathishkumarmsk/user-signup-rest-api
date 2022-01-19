@@ -3,6 +3,7 @@ import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import signupRouter from './routes/signup';
+import signinRouter from './routes/signin';
 import console from 'console';
 import db from './models';
 
@@ -12,6 +13,7 @@ const port = 8000;
 app.use(cors());
 app.use(express.json());
 app.use('/signup', signupRouter)
+app.use('/signin', signinRouter)
 
 app.use('/', (req, res) => res.send('msk'));
 
