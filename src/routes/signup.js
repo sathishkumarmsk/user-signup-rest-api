@@ -167,7 +167,7 @@ router.delete('/:id', async (req,res) => {
         })
 
         if (signup) {
-            return res.status(200).json(movie);
+            return res.status(200).json(signup);
         }
     
         return res.sendStatus(404);
