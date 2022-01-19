@@ -85,8 +85,8 @@ router.post('/', async (req, res) => {
 
 
        }
-       const signup = await db.movie.create(signupData);
-       if (movie) {
+       const signup = await db.signup.create(signupData);
+       if (signup) {
            return res.status(201).json(signup)
        }
        return res.sendStatus(404);
@@ -138,12 +138,12 @@ router.put('/:id', async (req, res) => {
            }
        });
        if (signup) {
-           return res.status(200).json(movie)
+           return res.status(200).json(signup)
        }
        return res.sendStatus(404);
    }
    catch (error) {
-       console.log(console.log(error))
+       console.log(error);
    }
 });
 
