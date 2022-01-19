@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { route } from "express/lib/application";
+import res from "express/lib/response";
 // import res from "express/lib/response";
 // import { DATE } from "sequelize/dist";
 
@@ -61,5 +63,31 @@ router.post('/', (req, res) => {
 
     res.status(201).json(newData);
 });
+
+router.put('/:id', (req, res) => {
+    const findData = data.find(item => item.id === parseInt(req.params.id));
+
+    if (findData) {
+        const updateData = {
+            id: findData.id,
+            FirstName: req.body.FirstName,
+            LastName: req.body.LastName,
+            UserName: req.body.UserName,
+            Password: req.body.Password,
+            ConformPassword: req.body.ConformPassword,
+            createdOn: new Date(),
+
+        }
+
+        const index = data.indexOf(findData);
+
+        data.splice(index, 1, updateData);
+
+        res.sendStatus(204);
+    }
+    else {
+        res.sendStatus(404)
+    }
+})
 
 export default router;
