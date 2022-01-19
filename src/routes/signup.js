@@ -90,4 +90,18 @@ router.put('/:id', (req, res) => {
     }
 })
 
+router.delete('/:id', (req,res) => {
+    const findData = data.find(item => item.id === parseInt(req.params.id));
+
+    if (findData) {
+        const index = data.indexOf(findData);
+        data.splice(index, 1);
+
+        res.sendStatus(204);
+    }
+    else {
+        res.sendStatus(404);
+    }
+});
+
 export default router;
