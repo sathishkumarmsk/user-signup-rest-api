@@ -1,12 +1,13 @@
 import { Router } from "express";
 import { route } from "express/lib/application";
 import res from "express/lib/response";
+import db from "../models";
 // import res from "express/lib/response";
 // import { DATE } from "sequelize/dist";
 
 const router = Router();
 
-const data = [
+/*const data = [
     {
         id: 1,
         FirstName: "msk",
@@ -30,23 +31,35 @@ const data = [
 
     }
 ]
+*/
 
+router.get('/', async (req, res) => {
+    const signup = await db.signup.findAll()
+    if (signup) {
+        return res.status(200).json(signup)
+    }
+    return res.sendStatus(404);
+});
+
+/*
 router.get('/', (req, res) => {
     res.status(200).json(data);
 });
+*/
 
-router.get('/:id', (req, res) => {
-    const findData = data.find(item => item.id === parseInt(req.params.id));
-    if (findData) {
-        res.status(200).json(findData);
+router.get('/:id', async (req, res) => {
+    // const findData = data.find(item => item.id === parseInt(req.params.id));
+    const signup = await db.signup.findBypk(req.params.id);
+    if (signup) {
+        return res.status(200).json(findData);
 
-    } else {
-        res.sendStatus(404);
-    }
+    } 
+    return res.sendStatus(404);
+    
 });
 
-router.post('/', (req, res) => {
-    const itemId = data.length + 1 ;
+router.post('/', async (req, res) => {
+    /* const itemId = data.length + 1 ;
 
     const newData = {
         id: itemId,
@@ -60,11 +73,34 @@ router.post('/', (req, res) => {
     }
 
     data.push(newData);
+    */
+   try {
+       const signupData = {
+        FirstName: req.body.FirstName,
+        LastName: req.body.LastName,
+        UserName: req.body.UserName,
+        Password: req.body.UserName,
+        ConformPassword: req.body.ConformPassword,
+        createdOn: new Date().toDateString(),
 
-    res.status(201).json(newData);
+
+       }
+       const signup = await db.movie.create(signupData);
+       if (movie) {
+           return res.status(201).json(signup)
+       }
+       return res.sendStatus(404);
+
+   }
+   catch (error) {
+       console.log(error);
+   }
+
+    
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
+    /* 
     const findData = data.find(item => item.id === parseInt(req.params.id));
 
     if (findData) {
@@ -88,10 +124,32 @@ router.put('/:id', (req, res) => {
     else {
         res.sendStatus(404)
     }
-})
+    */
+   try {
+       const signup = await db.signup.update({
+           UserName: req.body.UserName,
+           Password: req.body.Password,
 
-router.delete('/:id', (req,res) => {
-    const findData = data.find(item => item.id === parseInt(req.params.id));
+           ConformPassword: req.body.ConformPassword,
+
+       },{
+           where: {
+               id: req.params.id,
+           }
+       });
+       if (signup) {
+           return res.status(200).json(movie)
+       }
+       return res.sendStatus(404);
+   }
+   catch (error) {
+       console.log(console.log(error))
+   }
+});
+
+
+router.delete('/:id', async (req,res) => {
+   /* const findData = data.find(item => item.id === parseInt(req.params.id));
 
     if (findData) {
         const index = data.indexOf(findData);
@@ -101,6 +159,20 @@ router.delete('/:id', (req,res) => {
     }
     else {
         res.sendStatus(404);
+    }
+    */
+    try {
+        const signup = await db.signup.destroy({
+            where: { id: req.params.id },
+        })
+
+        if (signup) {
+            return res.status(200).json(movie);
+        }
+    
+        return res.sendStatus(404);
+    } catch (error) {
+        console.log(error);
     }
 });
 
